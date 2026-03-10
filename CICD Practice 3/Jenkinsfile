@@ -1,24 +1,31 @@
 pipeline {
+
  agent any
 
  stages {
 
-  stage('Checkout Code') {
+  stage('Clone Repository') {
+
    steps {
-    git 'https://your-repo-url'
+    git 'https://github.com/yourusername/devops-pipeline.git'
    }
+
   }
 
   stage('Build Docker Image') {
+
    steps {
     sh 'docker build -t devops-demo .'
    }
+
   }
 
   stage('Run Ansible Deployment') {
+
    steps {
     sh 'ansible-playbook ansible/deploy.yml'
    }
+
   }
 
  }
