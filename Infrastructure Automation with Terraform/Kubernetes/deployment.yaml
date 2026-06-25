@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+
+metadata:
+   name: App-dep
+
+spec:
+ replicas: 2
+ 
+ selector:
+   matchLabels:
+      app: Automation-Terraform
+
+ template:
+    metadata:
+      labels:
+        app: Automation-Terraform
+
+
+      spec:
+       containers:
+          - name: Nginx
+          - image: app-dep-img
+      ports:
+          -  containerPort: 80

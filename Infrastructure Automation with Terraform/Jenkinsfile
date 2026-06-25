@@ -1,0 +1,29 @@
+pipeline {
+    agent any
+
+    stages {
+        stage ('Clone') {
+            git 'https://github.com/Evangeline-Gifty/Terraform-devsecops.git'
+        }
+
+        stage ('Build') {
+            sh 'docker built -t app-dep-img .'
+        }
+
+        stage ('Deploy') {
+            sh 'kubectl apply -f deployment.yaml'
+            sh 'kubectl apply -f service.yaml'
+        }
+
+        stage ('Verify') {
+            sh 'docker images'
+            sh 'docker ps containers'
+            sh 'kubectl get deployments'
+            sh 'kubectl get svc'
+        }
+
+        stage ('Security') {
+            sh 'trivy image --severity HIGH, CRITICAL app-dep-img'
+        }
+    }
+}
