@@ -1,8 +1,0 @@
-- hosts: localhost
-  connection: local
-  gather_facts: no
-
-  tasks:
-
-  - name: Test Ansible
-    shell: echo "Deployment triggered"
