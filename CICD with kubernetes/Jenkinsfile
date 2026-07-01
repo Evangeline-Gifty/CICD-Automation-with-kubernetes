@@ -1,0 +1,54 @@
+pipeline {
+    agent any
+
+    stages {
+        
+        stage ('clone'){
+            steps {
+            git 'https://github.com/Evangeline-Gifty/CICD-Automation-with-kubernetes.git'
+            }
+        }
+
+        stage ('Build'){
+            steps {
+            sh 'docker build -t devops_ku .'
+            }
+        }
+        
+        stage ('Logging into DockerHub') {
+            steps {
+                withCredentials([usernamePassword(
+                   credentialsId: 'dockerhub_eva',
+                   usernameVariable: 'Docker_User',
+                   passwordVariable: 'Docker_Pass'
+                )]) {
+                    sh 'echo $Docker_Pass | docker login -u $Docker_User --password-stdin'
+                }
+            }
+        }
+
+        stage ('Push to DockerHub'){
+            steps {
+            sh 'docker push devops_ku'
+            }
+        }
+
+        stage ('Deploy'){
+            steps {
+            sh 'kubectl apply -f deployment.yaml'
+            sh 'kubectl apply -f service.yaml'
+            }
+        }
+
+        stage ('Verify') {
+            steps{
+                sh 'docker image ls'
+                sh 'kubectl get deployments'
+                sh 'kubectl get svc'
+                sh 'kubectl get pods'
+            }
+        }
+
+        }
+    }
+}

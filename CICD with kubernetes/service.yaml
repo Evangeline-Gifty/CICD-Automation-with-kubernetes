@@ -1,0 +1,12 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name:  DevOps-Service
+spec:
+  selector:
+    app:  devops
+  type:  ClusterIP
+  ports:
+  - name:  DevOps-Service
+    port:  80
+    targetPort:  80
